@@ -1,7 +1,7 @@
 import Image from "next/image";
-import { SaveIcon } from "../icons";
+import { SavedIcon, SaveIcon } from "../icons";
 import { IImage } from "@/types";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 
 // interface IImage {
 //   id: string;
@@ -13,7 +13,23 @@ import { FC } from "react";
 // }
 
 const Card: FC<IImage> = (props) => {
-  const { name, src, likes, shares } = props || {};
+  const { name, src, likes, shares } = props;
+  const [totalLike, setTotalLike] = useState(likes); // Ensure likes is not undefined
+  const [save, setSave] = useState(false);
+
+  // useEffect(() => {
+  //   if(save) {
+  //     setTotalLike((prev) => prev + 1)
+  //   } else {
+  //     setTotalLike((prev) => prev - 1)
+  //   }
+
+  // }, [save])
+
+  const updateLikes = (isSave: boolean) => {
+    setSave(isSave);
+    setTotalLike((prev) => (isSave ? prev + 1 : Math.max(prev - 1, 0))); // Prevent negative likes
+  };
 
   // const img: IImage = {
   //   id: "1",
@@ -30,7 +46,6 @@ const Card: FC<IImage> = (props) => {
         src={src}
         width={400}
         height={400}
-
         className="w-full object-cover h-[400px] max-w-md group-hover:scale-105 transition-all duration-200"
       />
 
@@ -38,11 +53,11 @@ const Card: FC<IImage> = (props) => {
         <div className="space-y-2">
           <p className="text-lg font-semibold">{name}</p>
           <p className="text-sm">
-            {likes} likes | {shares} shares
+          {totalLike} likes | {shares} shares
           </p>
         </div>
-        <button>
-          <SaveIcon />
+        <button onClick={() => updateLikes(!save)}>
+          {save ? <SavedIcon /> : <SaveIcon />}
         </button>
       </figcaption>
     </figure>
