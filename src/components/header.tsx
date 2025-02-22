@@ -5,16 +5,16 @@ import { useRouter } from "next/navigation";
 
 const Header = () => {
   const [searchData, setSearchData] = useState("");
-
   const router = useRouter();
 
   useEffect(() => {
     // if (searchData) {
-    //   router.push(`/?search=${searchData}`);      
+    //   router.push(`/?search=${searchData}`);
     // }
     router.push(searchData ? `/?search=${searchData}` : "/");
   }, [searchData, router]);
-  
+
+  const open = () => router.push("/?popup=true");
 
   return (
     <div className="flex justify-between items-center gap-2.5">
@@ -31,7 +31,7 @@ const Header = () => {
         </button>
       </div>
 
-      <button className="px-8 py-4 bg-slate-600 text-white text-base uppercase font-bold rounded hover:bg-slate-500 active:translate-y-1">
+      <button className="px-8 py-4 bg-slate-600 text-white text-base uppercase font-bold rounded hover:bg-slate-500 active:translate-y-1" onClick={open}>
         Upload
       </button>
     </div>
